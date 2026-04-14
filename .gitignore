@@ -1,0 +1,66 @@
+# ---------------- Python ----------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+*.pyo
+
+# ---------------- Virtual Env ----------------
+venv/
+env/
+ENV/
+.venv/
+.python-version
+
+# ---------------- Jupyter ----------------
+.ipynb_checkpoints
+*.ipynb
+
+# ---------------- Streamlit ----------------
+.streamlit/secrets.toml
+
+# ---------------- Environment variables ----------------
+.env
+.env.*
+*.env
+
+# ---------------- Logs ----------------
+logs/
+*.log
+
+# ---------------- OS files ----------------
+.DS_Store
+Thumbs.db
+
+# ---------------- VS Code ----------------
+.vscode/
+
+# ---------------- PyCharm ----------------
+.idea/
+
+# ---------------- Build ----------------
+build/
+dist/
+*.egg-info/
+
+# ---------------- Data files (optional) ----------------
+data/
+*.csv
+*.xlsx
+*.parquet
+
+# ---------------- Model files ----------------
+*.pt
+*.pth
+*.onnx
+*.pkl
+*.joblib
+
+# ---------------- Ollama cache (optional) ----------------
+.ollama/
+
+# ---------------- Temporary ----------------
+temp/
+tmp/
+*.tmp
