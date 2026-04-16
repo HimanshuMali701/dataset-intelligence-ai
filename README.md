@@ -134,7 +134,7 @@ AI-Dataset-Assistant/
 
 ### 1️⃣ Clone Repository
 ```bash
-git clone https://github.com/your-username/ai-dataset-assistant.git
+git clone https://github.com/HimanshuMali701/dataset-intelligence-ai.git
 cd ai-dataset-assistant
 ```
 ### 2️⃣ Create Virtual Environment
