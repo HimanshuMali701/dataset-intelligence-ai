@@ -26,6 +26,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# ✅ NOW show warning
+st.warning("⚠️ AI (LLM) features work fully only in local environment. Limited functionality in deployed version.")
 # ---------------- CUSTOM CSS ----------------
 # ---------------- CUSTOM CSS ----------------
 st.markdown(
@@ -342,34 +344,51 @@ with tab3:
 
 # ---------------- AI TOOLS TAB ----------------
 with tab4:
+    # ---------------- RECOMMENDATIONS ----------------
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("AI Recommendations")
+
     if suggestions:
         for s in suggestions:
             st.write(f"• {s}")
     else:
         st.success("Dataset looks clean. No major suggestions.")
+
     st.markdown("</div>", unsafe_allow_html=True)
 
+    # ---------------- MODEL SECTION ----------------
     a1, a2 = st.columns([1, 2])
 
+    # BUTTON
     with a1:
-        if st.button("Suggest ML Model", use_container_width=True):
-            st.session_state.model_suggestion = suggest_ml_model(
-                profile,
-                quality,
-                target_column,
-                health_score,
-                df,
-            )
+        if not target_column:
+            st.button("Suggest ML Model", disabled=True, use_container_width=True)
+            st.warning("Select a target column first")
+        else:
+            if st.button("Suggest ML Model", use_container_width=True):
+                with st.spinner("Generating model recommendation..."):
+                    st.session_state.model_suggestion = suggest_ml_model(
+                        profile,
+                        quality,
+                        target_column,
+                        health_score,
+                        df,
+                    )
 
+    # OUTPUT (ONLY HERE)
     with a2:
         if st.session_state.model_suggestion:
             st.markdown('<div class="section-card">', unsafe_allow_html=True)
-            st.subheader("Model Recommendation")
-            st.markdown(st.session_state.model_suggestion)
+
+            if "LLM features are disabled" in st.session_state.model_suggestion:
+                st.info(st.session_state.model_suggestion)
+            else:
+                st.subheader("Model Recommendation")
+                st.markdown(st.session_state.model_suggestion)
+
             st.markdown("</div>", unsafe_allow_html=True)
 
+    # ---------------- PREPROCESSING ----------------
     if st.button("Generate Preprocessing Code", use_container_width=True):
         st.session_state.preprocessing_code = generate_preprocessing_code(
             profile,
@@ -381,27 +400,32 @@ with tab4:
     if st.session_state.preprocessing_code:
         st.markdown('<div class="section-card">', unsafe_allow_html=True)
         st.subheader("Preprocessing Code")
-        for title, code in st.session_state.preprocessing_code:
-            st.subheader(title)
-            st.code(code, language="python")
-            st.markdown("</div>", unsafe_allow_html=True)
 
+        for title, code in st.session_state.preprocessing_code:
+            st.markdown(f"### {title}")
+            st.code(code, language="python")
+
+        st.markdown("</div>", unsafe_allow_html=True)
 # ---------------- CHAT TAB ----------------
 with tab5:
     st.markdown('<div class="section-card">', unsafe_allow_html=True)
     st.subheader("Ask AI about Dataset")
-    st.caption("Ask follow-up questions like: Is this dataset good for prediction? Which columns should I drop? What preprocessing should I apply?")
+    st.caption(
+        "Ask: Is this dataset good for prediction? Which columns should I drop? What preprocessing should I apply?"
+    )
     st.markdown("</div>", unsafe_allow_html=True)
 
     question = st.chat_input("Ask about the dataset...")
 
+    # ---------------- HANDLE INPUT ----------------
     if question:
-        answer = ask_dataset_question(
-            question,
-            profile,
-            quality,
-            health_score,
-        )
+        with st.spinner("Thinking..."):
+            answer = ask_dataset_question(
+                question,
+                profile,
+                quality,
+                health_score,
+            )
 
         st.session_state.chat_history.append(
             {"role": "user", "content": question}
@@ -410,5 +434,14 @@ with tab5:
             {"role": "assistant", "content": answer}
         )
 
+    # ---------------- DISPLAY CHAT ----------------
     for msg in st.session_state.chat_history:
-        st.chat_message(msg["role"]).write(msg["content"])
+
+        with st.chat_message(msg["role"]):
+
+            # Handle cloud fallback nicely
+            if "LLM features are disabled" in msg["content"]:
+                st.info(msg["content"])
+
+            else:
+                st.markdown(msg["content"])
