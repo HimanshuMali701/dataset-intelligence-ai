@@ -2,6 +2,13 @@
 
 An **LLM-powered dataset analysis system** that automatically evaluates data quality, detects issues, suggests preprocessing steps, and enables natural language interaction with datasets.
 
+🌐 Live Demo
+
+🔗 Try the app here:
+👉 https://dataset-intelligence-ai.streamlit.app/
+
+⚠️ Note: AI (LLM) features work fully only in local setup using Ollama.
+The deployed version includes data analysis, visualization, and rule-based insights.
 ---
 
 ## 🚀 Features
