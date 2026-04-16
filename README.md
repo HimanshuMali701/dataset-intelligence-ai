@@ -6,8 +6,6 @@ An **LLM-powered dataset analysis system** that automatically evaluates data qua
 
 ## 🚀 Features
 
----
-
 ### 📊 Data Profiling
 - Dataset shape & structure  
 - Data types analysis  
@@ -130,3 +128,37 @@ AI-Dataset-Assistant/
 - Streamlit  
 
 ---
+## ⚙️ Installation & Setup
+
+---
+
+### 1️⃣ Clone Repository
+```bash
+git clone https://github.com/your-username/ai-dataset-assistant.git
+cd ai-dataset-assistant
+```
+### 2️⃣ Create Virtual Environment
+```
+python -m venv venv
+```
+Activate Environment
+```
+venv\Scripts\activate
+```
+### 3️⃣ Install Dependencies
+```
+pip install -r requirements.txt
+```
+### 4️⃣ Install Ollama
+
+Download and install from:
+👉 https://ollama.com
+
+### 5️⃣ Pull LLM Model
+```
+ollama pull phi3:mini
+```
+### ▶️ Run the App
+```
+streamlit run app.py
+```
